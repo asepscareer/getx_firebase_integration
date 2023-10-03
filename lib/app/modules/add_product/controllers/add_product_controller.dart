@@ -1,23 +1,43 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class AddProductController extends GetxController {
-  //TODO: Implement AddProductController
+import '../../../data/models/product_model.dart';
+import '../../../data/providers/product_provider.dart';
+import '../../../widgets/dialog_err.dart';
 
-  final count = 0.obs;
+class AddProductController extends GetxController {
+  late TextEditingController name, price;
+  RxList<Product> products = List<Product>.empty().obs;
+
   @override
   void onInit() {
     super.onInit();
-  }
-
-  @override
-  void onReady() {
-    super.onReady();
+    name = TextEditingController();
+    price = TextEditingController();
   }
 
   @override
   void onClose() {
-    super.onClose();
+    super.dispose();
+    name.dispose();
+    price.dispose();
   }
 
-  void increment() => count.value++;
+  void add(String name, String prc) {
+    if (name != '' && prc != '') {
+      double price = double.parse(prc);
+
+      ProductProvider().addProduct(name, price).then((response) {
+        final data = Product(
+          id: response["name"],
+          name: name,
+          price: price,
+        );
+        products.add(data);
+        Get.back();
+      });
+    } else {
+      dialogError("Semua input harus terisi");
+    }
+  }
 }

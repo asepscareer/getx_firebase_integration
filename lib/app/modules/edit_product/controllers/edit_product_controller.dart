@@ -1,23 +1,29 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class EditProductController extends GetxController {
-  //TODO: Implement EditProductController
+import '../../../data/models/product_model.dart';
+import '../../../data/providers/product_provider.dart';
 
-  final count = 0.obs;
+class EditProductController extends GetxController {
+  late TextEditingController name, price;
+  RxList<Product> products = List<Product>.empty().obs;
+
   @override
   void onInit() {
     super.onInit();
-  }
-
-  @override
-  void onReady() {
-    super.onReady();
+    name = TextEditingController();
+    price = TextEditingController();
   }
 
   @override
   void onClose() {
-    super.onClose();
+    name.dispose();
+    price.dispose();
   }
 
-  void increment() => count.value++;
+  void edit(String id, String name, String prc) {
+    double price = double.parse(prc);
+    ProductProvider().editProduct(id, name, price);
+    Get.back();
+  }
 }

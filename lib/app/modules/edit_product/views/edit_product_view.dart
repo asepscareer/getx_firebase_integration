@@ -17,21 +17,34 @@ class EditProductView extends GetView<EditProductController> {
         padding: const EdgeInsets.all(20.0),
         child: Column(
           children: [
-            TextFormField(
-              onTap: () {},
+            TextField(
               autocorrect: false,
+              controller: controller.name,
               decoration: InputDecoration(
-                hintText: "Product Name",
-                label: const Text("Product Name"),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(5),
-                ),
+                hintText: Get.arguments["name"],
+                border: const OutlineInputBorder(),
+              ),
+            ),
+            const SizedBox(height: 10),
+            TextField(
+              autocorrect: false,
+              controller: controller.price,
+              decoration: InputDecoration(
+                hintText: Get.arguments["price"].toString(),
+                helperText: "* Masukkan hanya angka",
+                border: const OutlineInputBorder(),
               ),
             ),
             Align(
               alignment: Alignment.centerRight,
               child: ElevatedButton(
-                onPressed: () {},
+                onPressed: () {
+                  controller.edit(
+                    Get.arguments["id"],
+                    controller.name.text,
+                    controller.price.text,
+                  );
+                },
                 child: const Text("OK"),
               ),
             ),
